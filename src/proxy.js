@@ -8,9 +8,14 @@
     function BehaviorList(func) {
         this.func = func;
         this.index = 0;
+
+        this.isLast = function() {
+            return this.index > proxy.interceptionBehaviors.length;
+        };
+
         this.getNext = function() {
             if (this.index <= proxy.interceptionBehaviors.length) {
-                var returnValue = this.func; 
+                var returnValue = this.func;
 
                 if (this.index < proxy.interceptionBehaviors.length)
                     returnValue = proxy.interceptionBehaviors[this.index];
@@ -31,7 +36,7 @@
             if (typeof val === 'function') {
                 proxyObj[prop] = function () {
                     var behaviorList = new BehaviorList(val);
-                    behaviorList.getNext().apply(behaviorList, arguments);
+                    behaviorList.getNext().apply(obj, behaviorList.isLast() ? arguments : [{behaviorList: behaviorList, arguments: arguments}]);
                 };
             }
         }
@@ -39,6 +44,12 @@
         return proxyObj;
     };
 
-    window.proxy = proxy;
+    if (typeof define === 'function' && define.amd) {
+        define('proxy', [], function() {
+            return proxy;
+        });
+    } else {
+        window.proxy = proxy;
+    }
 
 }(window, undefined));
