@@ -1,0 +1,21 @@
+<html>
+<head></head>
+<body>
+    <script src="../src/proxy.js"></script>
+    <script src="../src/defaultInterceptionBehavior.js"></script>
+    <script src="../src/testInterceptionBehavior.js"></script>
+    <script>
+        var obj = {
+            a: 0, 
+            execute: function(val) {
+                console.log('>> execute ' + val);
+            }
+        };
+
+        var proxyObj = proxy.build(obj, ['execute']);
+
+        proxyObj.execute('test');
+
+    </script>
+</body>
+</html>
