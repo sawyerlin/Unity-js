@@ -34,9 +34,11 @@
             if (allowedList.indexOf(prop) === -1) continue;
             var val = obj[prop];
             if (typeof val === 'function') {
+                var argu = [{arguments: arguments, name: prop}];
                 proxyObj[prop] = function () {
                     var behaviorList = new BehaviorList(val);
-                    behaviorList.getNext().apply(obj, behaviorList.isLast() ? arguments : [{behaviorList: behaviorList, arguments: arguments}]);
+                    argu[0].behaviorList = behaviorList;
+                    behaviorList.getNext().apply(obj, behaviorList.isLast() ? arguments : argu);
                 };
             }
         }
