@@ -3,11 +3,11 @@
 * Usage
 ```javascript
 var obj = {
-            a: 0, 
-            execute: function(val) {
-                console.log('>> execute ' + val);
-            }
-        };
-        var proxyObj = proxy.build(obj, ['execute']);
-        proxyObj.execute('test');
+a: 0, 
+   execute: function(val) {
+       console.log('>> execute ' + val);
+   }
+};
+var proxyObj = proxy.build(obj, ['execute']);
+proxyObj.execute('test');
 ```
