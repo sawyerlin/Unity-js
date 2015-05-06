@@ -26,6 +26,14 @@
         };
     }
 
+    function proxyFunc(argu, val, obj) {
+        return function() {
+            var behaviorList = new BehaviorList(val);
+            argu[0].behaviorList = behaviorList;
+            behaviorList.getNext().apply(obj, behaviorList.isLast() ? arguments : argu);
+        };
+    }
+
     proxy.build = function(obj, allowedList) {
 
         var proxyObj = Object.create(obj);
@@ -35,11 +43,7 @@
             var val = obj[prop];
             if (typeof val === 'function') {
                 var argu = [{arguments: arguments, name: prop}];
-                proxyObj[prop] = function () {
-                    var behaviorList = new BehaviorList(val);
-                    argu[0].behaviorList = behaviorList;
-                    behaviorList.getNext().apply(obj, behaviorList.isLast() ? arguments : argu);
-                };
+                proxyObj[prop] = new proxyFunc(argu, val, obj);
             }
         }
 
