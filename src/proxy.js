@@ -29,8 +29,9 @@
     function proxyFunc(argu, val, obj) {
         return function() {
             var behaviorList = new BehaviorList(val);
+            argu[0].arguments = arguments;
             argu[0].behaviorList = behaviorList;
-            behaviorList.getNext().apply(obj, behaviorList.isLast() ? arguments : argu);
+            behaviorList.getNext().apply(obj, argu);
         };
     }
 
